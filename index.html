@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Task Orchestrator | IBM Hackathon</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>AI Task Orchestrator</h1>
+                    <p>IBM Dev Day AI Demystified Hackathon</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+                <button class="btn btn-primary" id="demoBtn">
+                    <i class="fas fa-magic"></i> Try Demo
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Input & Controls -->
+            <div class="left-panel">
+                <div class="input-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> Task Description</h2>
+                        <div class="task-counter">
+                            <span id="charCount">0</span>/1000
+                        </div>
+                    </div>
+                    <textarea 
+                        id="taskInput" 
+                        placeholder="Describe your task in detail... 
+Example: 'Create a marketing plan for a new eco-friendly product launch' 
+or 'Develop a mobile app for tracking personal fitness goals'
+                        " 
+                        maxlength="1000"
+                    ></textarea>
+                    <div class="input-actions">
+                        <div class="complexity-selector">
+                            <label>Complexity:</label>
+                            <select id="complexitySelect">
+                                <option value="simple">Simple</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="complex">Complex</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-large" id="processBtn">
+                            <i class="fas fa-play-circle"></i> Orchestrate Task
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status & Progress -->
+                <div class="status-section">
+                    <h3><i class="fas fa-chart-line"></i> Orchestration Status</h3>
+                    <div class="status-indicators">
+                        <div class="status-item" id="plannerStatus">
+                            <div class="status-dot"></div>
+                            <span>Planning</span>
+                        </div>
+                        <div class="status-item" id="validatorStatus">
+                            <div class="status-dot"></div>
+                            <span>Validation</span>
+                        </div>
+                        <div class="status-item" id="advisorStatus">
+                            <div class="status-dot"></div>
+                            <span>Advising</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="execution-time" id="executionTime">
+                        Execution time: --:--
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Results -->
+            <div class="right-panel">
+                <!-- Tab Navigation -->
+                <div class="tabs">
+                    <button class="tab active" data-tab="planner">
+                        <i class="fas fa-map-signs"></i> Plan
+                    </button>
+                    <button class="tab" data-tab="validator">
+                        <i class="fas fa-check-circle"></i> Validation
+                    </button>
+                    <button class="tab" data-tab="advisor">
+                        <i class="fas fa-lightbulb"></i> Advice
+                    </button>
+                    <button class="tab" data-tab="summary">
+                        <i class="fas fa-file-alt"></i> Summary
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Planner Tab -->
+                    <div class="tab-pane active" id="plannerTab">
+                        <div class="tab-header">
+                            <h3><i class="fas fa-project-diagram"></i> Task Breakdown</h3>
+                            <button class="btn btn-small" id="exportPlanBtn">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                        <div class="content" id="plannerContent">
+                            <div class="empty-state">
+                                <i class="fas fa-brain"></i>
+                                <p>Your task breakdown will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Validator Tab -->
+                    <div class="tab-pane" id="validatorTab">
+                        <div class="tab-header">
+                            <h3><i class="fas fa-shield-alt"></i> Validation Results</h3>
+                        </div>
+                        <div class="content" id="validatorContent">
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-check"></i>
+                                <p>Validation results will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advisor Tab -->
+                    <div class="tab-pane" id="advisorTab">
+                        <div class="tab-header">
+                            <h3><i class="fas fa-graduation-cap"></i> Expert Advice</h3>
+                        </div>
+                        <div class="content" id="advisorContent">
+                            <div class="empty-state">
+                                <i class="fas fa-comments"></i>
+                                <p>Expert advice will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Tab -->
+                    <div class="tab-pane" id="summaryTab">
+                        <div class="tab-header">
+                            <h3><i class="fas fa-chart-pie"></i> Orchestration Summary</h3>
+                            <button class="btn btn-small" id="exportSummaryBtn">
+                                <i class="fas fa-file-export"></i> Export
+                            </button>
+                        </div>
+                        <div class="content" id="summaryContent">
+                            <div class="empty-state">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>Summary will appear here after orchestration</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="ibm-badge">
+                        <i class="fas fa-cube"></i>
+                        <span>Powered by IBM watsonx</span>
+                    </div>
+                    <p class="footer-text">
+                        AI Demystified Hackathon | IBM Dev Day 2026
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <button class="btn-link" id="aboutBtn">
+                        <i class="fas fa-info-circle"></i> About
+                    </button>
+                    <button class="btn-link" id="docsBtn">
+                        <i class="fas fa-book"></i> Documentation
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-robot"></i> About AI Task Orchestrator</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>This application demonstrates AI task orchestration using IBM watsonx for the IBM Dev Day AI Demystified Hackathon.</p>
+                <div class="features">
+                    <h3>Features:</h3>
+                    <ul>
+                        <li><strong>Planner Agent:</strong> Breaks down complex tasks into manageable steps</li>
+                        <li><strong>Validator Agent:</strong> Validates task feasibility and identifies risks</li>
+                        <li><strong>Advisor Agent:</strong> Provides expert recommendations and best practices</li>
+                        <li><strong>Real-time Orchestration:</strong> Coordinates multiple AI agents</li>
+                    </ul>
+                </div>
+                <div class="tech-stack">
+                    <h3>Technology Stack:</h3>
+                    <div class="tech-icons">
+                        <span class="tech-icon"><i class="fab fa-js-square"></i> JavaScript</span>
+                        <span class="tech-icon"><i class="fas fa-cloud"></i> IBM Cloud Functions</span>
+                        <span class="tech-icon"><i class="fas fa-brain"></i> IBM watsonx</span>
+                        <span class="tech-icon"><i class="fab fa-html5"></i> HTML5/CSS3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
